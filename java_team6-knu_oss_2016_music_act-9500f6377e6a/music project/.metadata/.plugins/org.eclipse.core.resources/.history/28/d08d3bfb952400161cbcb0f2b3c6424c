@@ -1,0 +1,67 @@
+package musicT;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class Music {
+	static File file;
+	static SourceDataLine mLine =null;
+	static AudioInputStream ais = null;
+	static AudioFormat audioFormat =null;
+	static DataLine.Info info;
+	
+	static int bufferSize = 0;
+	static byte[] buffer;
+	static int bytesRead = 0;
+	public static void main(String[] args){
+			try{
+				file = new File("D:/JAVA/project/music project/musicT/src/musicT/music.mp3");
+				ais = AudioSystem.getAudioInputStream(file);
+				audioFormat = ais.getFormat();
+				if(audioFormat.getEncoding()!=
+						AudioFormat.Encoding.PCM_SIGNED){
+					AudioFormat newFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+							audioFormat.getSampleRate(),
+							16,
+							audioFormat.getChannels(),
+							audioFormat.getChannels()*2,
+							audioFormat.getSampleRate(),
+							false);
+					System.out.println("Converting audio format to"
+							+newFormat);
+					AudioInputStream newStream = AudioSystem.getAudioInputStream(newFormat,ais);
+					audioFormat = newFormat;
+					ais = newStream;
+				}
+				info = new DataLine.Info(SourceDataLine.class,audioFormat);
+				mLine = (SourceDataLine) AudioSystem.getLine(info);
+				mLine.open(audioFormat,mLine.getBufferSize());
+				mLine.start();
+				bufferSize = (int)audioFormat.getSampleRate()*audioFormat.getFrameSize();
+				buffer = new byte[bufferSize];
+				bytesRead = 0;
+				while(bytesRead >= 0){
+					bytesRead = ais.read(buffer,0,buffer.length);
+					if(bytesRead >= 0){
+						mLine.write(buffer, 0, bytesRead);
+					}
+				}
+				mLine.drain();
+				mLine.close();
+			}catch(Exception e){
+				e.printStackTrace();
+		}
+	}
+}

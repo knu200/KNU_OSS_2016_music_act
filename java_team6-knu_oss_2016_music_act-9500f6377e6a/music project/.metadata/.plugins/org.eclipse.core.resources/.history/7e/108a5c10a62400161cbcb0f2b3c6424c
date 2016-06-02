@@ -1,0 +1,54 @@
+package test;
+
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
+
+import test.MusicMain;
+public class LeapMotionListener extends Listener{
+	Finger finger;
+	Frame frame;
+	double volume = 1;
+	int xAxisMain = -200;
+	int xAxisMax = 200;
+	int numTapAreas = 5;
+	double currentX = 0;
+	double currentY = 0;
+	double beforeX = 0;
+	double beforeY = 0;
+	public void onInit(Controller controller){
+		System.out.println("init");
+	}
+	public void onConnect(Controller controller){
+		System.out.println("connect");
+	}
+	public void onFrame(Controller controller){
+		frame = controller.frame();
+		finger = frame.hands().get(0).fingers().get(2);
+		MusicMain.window.point.repaint();
+		currentX = finger.tipPosition().getX();
+		currentY = finger.tipPosition().getY();
+		beforeX =  MusicMain.window.point.getCurrentX();
+		beforeY =  MusicMain.window.point.getCurrentY();
+		if(currentY<beforeY&&(trueOrFalse.action == 0||trueOrFalse.action==1)){
+			trueOrFalse.action = 1;
+		}
+		if(currentY>beforeY&&currentX>beforeX&&(trueOrFalse.action == 2||trueOrFalse.actionList.get(1)==true)){
+			trueOrFalse.action = 2;
+		}
+		if(currentX<beforeX&&(trueOrFalse.actionList.get(2)==true||trueOrFalse.action == 3)){
+			trueOrFalse.action = 3;
+		}
+		if(currentX>beforeX&&currentY>beforeY&&(trueOrFalse.actionList.get(3)==true||trueOrFalse.action == 4)){
+			trueOrFalse.action = 4;
+		}
+		//System.out.printf("%f,%f\n",(currentX),(600-currentY)*(393.0/600));
+		MusicMain.window.point.setCurrentX((int)position((long)((currentX)*(800.0/600.0)+300.0*(800.0/600))));
+		MusicMain.window.point.setCurrentY((int)position((long)((600-currentY)*(600.0/600))));
+	}
+	public long position(long newPosition){
+		return newPosition;
+	}
+}

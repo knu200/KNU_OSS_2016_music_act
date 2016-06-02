@@ -1,0 +1,14 @@
+package music;
+public class MainApp{
+	private static Window window;
+	public static void main(String args[]){
+		setWindow(new Window());
+		getWindow().frame.setVisible(true);
+	}
+	public static Window getWindow() {
+		return window;
+	}
+	public static void setWindow(Window window) {
+		MainApp.window = window;
+	}
+}

@@ -1,0 +1,89 @@
+package test;
+
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
+
+import test.MusicMain;
+public class LeapMotionListener extends Listener{
+	Finger finger;
+	Frame frame;
+	double volume = 1;
+	int xAxisMain = -200;
+	int xAxisMax = 200;
+	int numTapAreas = 5;
+	double currentX = 0;
+	double currentY = 0;
+	double beforeX = 0;
+	double beforeY = 0;
+	double startX = 0;
+	double startY = 0;
+	public void onInit(Controller controller){
+		System.out.println("init");
+	}
+	public void onConnect(Controller controller){
+		System.out.println("connect");
+	}
+	public void onFrame(Controller controller){
+		frame = controller.frame();
+		finger = frame.hands().get(0).fingers().get(2);
+		MusicMain.window.point.repaint();
+		currentX = finger.tipPosition().getX();
+		currentY = finger.tipPosition().getY();
+		//System.out.printf("current: %f,%f  ; before: %f,%f\n",currentX,currentY,beforeX,beforeY);
+		if(currentY<beforeY&&(trueOrFalse.currentState == 0)&&currentY>400&&currentX>0){
+			trueOrFalse.currentState = 1;
+			trueOrFalse.beforeState = 0;
+			startX= currentX;
+			startY = currentY;
+//			trueOrFalse.actionNum ++;
+		}
+		//if(currentY>beforeY&&currentX>beforeX&&(trueOrFalse.action == 2||trueOrFalse.actionList.get(1)==true))
+		if(currentY>beforeY&&currentX>beforeX&&
+				((trueOrFalse.currentState==1&&trueOrFalse.beforeState==0)||(trueOrFalse.currentState==1&&trueOrFalse.beforeState==4))&&Math.abs(currentY-startY)>300)
+		{
+			trueOrFalse.currentState = 2;
+			trueOrFalse.beforeState = 1;
+			startX= currentX;
+			startY = currentY;
+//			trueOrFalse.actionNum ++;
+		}
+//		if(currentX<beforeX&&(trueOrFalse.actionList.get(2)==true||trueOrFalse.action == 3))
+		if(currentX<beforeX&&(trueOrFalse.currentState==2&&trueOrFalse.beforeState==1)&&Math.abs((currentY)-startY)>100)
+		{
+			trueOrFalse.currentState = 3;
+			trueOrFalse.beforeState = 2;
+			startX= currentX;
+			startY = currentY;
+//			trueOrFalse.actionNum ++;
+		}
+//		if(currentX>beforeX&&currentY>beforeY&&(trueOrFalse.actionList.get(3)==true||trueOrFalse.action == 4))
+		if(currentX>beforeX&&currentY>beforeY&&(trueOrFalse.currentState==3&&trueOrFalse.beforeState==2)&&Math.abs(currentX-startX)>600)
+		{
+			trueOrFalse.currentState = 4;
+			trueOrFalse.beforeState = 3;
+			startX= currentX;
+			startY = currentY;
+//			trueOrFalse.actionNum++;
+		}
+		if(currentY<beforeY&&(trueOrFalse.currentState==4&&trueOrFalse.beforeState==3)&&Math.abs(currentY-startY)>100){
+			trueOrFalse.currentState = 1;
+			trueOrFalse.beforeState = 4;
+//			trueOrFalse.actionNum ++;
+			trueOrFalse.count++;
+			startX= currentX;
+			startY = currentY;
+			System.out.println(trueOrFalse.count);
+		}
+		//System.out.printf("%f,%f\n",(currentX),(600-currentY)*(393.0/600));
+		MusicMain.window.point.setCurrentX((int)position((long)((currentX)*(800.0/600.0)+300.0*(800.0/600))));
+		MusicMain.window.point.setCurrentY((int)position((long)((600-currentY)*(600.0/600))));
+		beforeY = currentY;
+		beforeX = currentX;
+	}
+	public long position(long newPosition){
+		return newPosition;
+	}
+}

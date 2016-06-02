@@ -1,0 +1,120 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import com.leapmotion.leap.*;
+
+import music.SampleListener;
+
+
+public class SampleTest{
+	
+	public static void main(String agrs[]){
+		
+		Sample sample = new Sample();
+	}
+	
+}
+
+class Pelan extends JFrame{
+    
+    private static final long serialVersionUID = -530871360516525668L;
+    private JPanel contentPane;
+    private JLabel label;
+	public Pelan(){
+        setTitle("跟随鼠标移动的文本");// 设置窗体标题
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 设置窗体关闭时的动作
+        setBounds(100, 100, 600, 300);// 设置窗体的大小和位置
+        contentPane = new JPanel();// 创建面板
+        contentPane.addMouseMotionListener(new MouseMotionAdapter() {// 监听鼠标移动事件
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        label.setText("流星泪");// 为标签设置文本信息
+                        Point mousePoint = e.getPoint();// 获得鼠标的位置
+                        label.setLocation(mousePoint.x, mousePoint.y);// 更新标签的位置
+                    }
+                });
+        contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));// 设置边框
+        setContentPane(contentPane);
+        contentPane.setLayout(null);// 使用绝对布局
+        
+        label = new JLabel("");// 创建标签
+        label.setBounds(6, 6, 55, 18);// 设置标签大小和位置
+        contentPane.add(label);// 应用标签
+        
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    int r = new Random().nextInt(256);
+                    int g = new Random().nextInt(256);
+                    int b = new Random().nextInt(256);
+                    label.setForeground(new Color(r, g, b));
+                    
+                }
+            }
+        }.start();
+    }
+	}
+}
+class Sample
+{
+	public Sample()
+	{
+		SampleListener listener = new SampleListener();
+		Controller controller = new Controller();
+		controller.addListener(listener);
+		
+		
+		System.out.println("Press Enter to quit...");
+		try
+		{
+			System.in.read();			
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		controller.removeListener(listener);
+	}
+
+}
+class SampleListener extends Listener
+{
+	public void onConnect(Controller controller)
+	{
+		System.out.println("Connected");
+		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+	}
+	
+	public void onFrame(Controller controller)
+	{
+		//System.out.println("Frame available");
+		Frame frame = controller.frame();
+		Pelan pelan = new Pelan();
+//		System.out.println("Frame id: " + frame.id()
+//							+ ", timestamp: " + frame.timestamp()
+//							+ ", hands: " + frame.hands().count()
+//							+ ", fingers: " + frame.fingers().count()
+//							+ ", tools: " + frame.tools().count()
+//							+ ", gestures: " + frame.gestures().count());		
+//		
+		
+	}
+	
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="javafx.fxml.FXML"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
+<fullyQualifiedTypeName name="javafx.fxml.FXMLLoader"/>
+<fullyQualifiedTypeName name="javafx.stage.Modality"/>
+<fullyQualifiedTypeName name="javafx.scene.Scene"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.AnchorPane"/>
+<fullyQualifiedTypeName name="music.view.GraphController"/>
+<fullyQualifiedTypeName name="com.leapmotion.leap.Hand"/>
+<fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
+<fullyQualifiedTypeName name="Graph.Sample"/>
+<fullyQualifiedTypeName name="com.leapmotion.leap.Tool"/>
+<fullyQualifiedTypeName name="javax.swing.JComponent"/>
+<fullyQualifiedTypeName name="java.awt.Graphics"/>
+<fullyQualifiedTypeName name="music.MainApp"/>
+<fullyQualifiedTypeName name="music.Window.Driver"/>
+<fullyQualifiedTypeName name="com.leapmotion.leap.Controller"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.SourceDataLine"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.AudioFormat.Encoding"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.DataLine"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.DataLine.Info"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.AudioSystem"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.Clip"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="musicT.Drive"/>
+<fullyQualifiedTypeName name="java.nio.file.Path"/>
+<fullyQualifiedTypeName name="test.Window"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.nio.file.Paths"/>
+</qualifiedTypeNameHistroy>

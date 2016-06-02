@@ -1,0 +1,74 @@
+package test;
+
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
+
+import test.MusicMain;
+public class LeapMotionListener extends Listener{
+	Finger finger;
+	Frame frame;
+	double volume = 1;
+	int xAxisMain = -200;
+	int xAxisMax = 200;
+	int numTapAreas = 5;
+	double currentX = 0;
+	double currentY = 0;
+	double beforeX = 0;
+	double beforeY = 0;
+	public void onInit(Controller controller){
+		System.out.println("init");
+	}
+	public void onConnect(Controller controller){
+		System.out.println("connect");
+	}
+	public void onFrame(Controller controller){
+		frame = controller.frame();
+		finger = frame.hands().get(0).fingers().get(2);
+		MusicMain.window.point.repaint();
+		currentX = finger.tipPosition().getX();
+		currentY = finger.tipPosition().getY();
+		//System.out.printf("current: %f,%f  ; before: %f,%f\n",currentX,currentY,beforeX,beforeY);
+		if(currentY<beforeY&&(Window.tof.currentState == 0)){
+			Window.tof.currentState = 1;
+			Window.tof.beforeState = 0;
+			Window.tof.actionNum ++;
+		}
+		//if(currentY>beforeY&&currentX>beforeX&&(Window.tof.action == 2||Window.tof.actionList.get(1)==true))
+		if(currentY>beforeY&&currentX>beforeX&&(Window.tof.currentState==1&&Window.tof.beforeState==0)||(Window.tof.currentState==1&&Window.tof.beforeState==4))
+		{
+			Window.tof.currentState = 2;
+			Window.tof.beforeState = 1;
+			Window.tof.actionNum ++;
+		}
+//		if(currentX<beforeX&&(Window.tof.actionList.get(2)==true||Window.tof.action == 3))
+		if(currentX<beforeX&&(Window.tof.currentState==2&&Window.tof.beforeState==1))
+		{
+			Window.tof.currentState = 3;
+			Window.tof.beforeState = 2;
+			Window.tof.actionNum ++;
+		}
+//		if(currentX>beforeX&&currentY>beforeY&&(Window.tof.actionList.get(3)==true||Window.tof.action == 4))
+		if(currentX>beforeX&&currentY>beforeY&&(Window.tof.currentState==3&&Window.tof.beforeState==2))
+		{
+			Window.tof.currentState = 4;
+			Window.tof.beforeState = 3;
+			Window.tof.actionNum++;
+		}
+		if(currentY<beforeY&&(Window.tof.currentState==4&&Window.tof.beforeState==3)){
+			Window.tof.currentState = 1;
+			Window.tof.beforeState = 4;
+			Window.tof.actionNum ++;
+		}
+		//System.out.printf("%f,%f\n",(currentX),(600-currentY)*(393.0/600));
+		MusicMain.window.point.setCurrentX((int)position((long)((currentX)*(800.0/600.0)+300.0*(800.0/600))));
+		MusicMain.window.point.setCurrentY((int)position((long)((600-currentY)*(600.0/600))));
+		beforeY = currentY;
+		beforeX = currentX;
+	}
+	public long position(long newPosition){
+		return newPosition;
+	}
+}

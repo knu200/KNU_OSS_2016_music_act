@@ -1,0 +1,37 @@
+package test;
+
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
+
+import test.MusicMain;
+public class LeapMotionListener extends Listener{
+	Finger finger;
+	Frame frame;
+	double volume = 1;
+	int xAxisMain = -200;
+	int xAxisMax = 200;
+	int numTapAreas = 5;
+	double currentX = 0;
+	double currentY = 0;
+	public void onInit(Controller controller){
+		System.out.println("init");
+	}
+	public void onConnect(Controller controller){
+		System.out.println("connect");
+	}
+	public void onFrame(Controller controller){
+		frame = controller.frame();
+		finger = frame.hands().get(0).fingers().get(1);
+		MusicMain.window.point.repaint();
+		currentX = finger.tipPosition().getX();
+		currentY = finger.tipPosition().getY();
+		MusicMain.window.point.setCurrentX((int)position((long)currentX+100));
+		MusicMain.window.point.setCurrentY((int)position((long)currentY+100));
+	}
+	public long position(long newPosition){
+		return newPosition;
+	}
+}

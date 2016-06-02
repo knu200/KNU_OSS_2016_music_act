@@ -1,0 +1,84 @@
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import com.leapmotion.leap.*;
+
+
+public class SampleTest{
+	
+	public static void main(String agrs[]){
+		
+		Sample sample = new Sample();
+
+	}
+	
+}
+
+class Pelan extends JFrame{
+	public static JPanel contentPane;
+    private Graphics g;
+	public Pelan(){
+		g.setColor(Color.blue);
+		g.fillOval(10, 10, E_RESIZE_CURSOR, HEIGHT);
+        contentPane = new JPanel();// 创建面板
+        contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));// 设置边框
+        contentPane.paintComponents(g);
+        add(contentPane);
+        setSize(600,600);
+	}
+}
+class Sample
+{
+	public Sample()
+	{
+		SampleListener listener = new SampleListener();
+		Controller controller = new Controller();
+		controller.addListener(listener);
+		Pelan p = new Pelan();
+		p.contentPane.setVisible(true);
+		System.out.println("Press Enter to quit...");
+		try
+		{
+			System.in.read();			
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		controller.removeListener(listener);
+	}
+
+}
+class SampleListener extends Listener
+{
+	public void onConnect(Controller controller)
+	{
+		System.out.println("Connected");
+		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+	}
+	
+	public void onFrame(Controller controller)
+	{
+		//System.out.println("Frame available");
+		Frame frame = controller.frame();
+
+		
+//		System.out.println("Frame id: " + frame.id()
+//							+ ", timestamp: " + frame.timestamp()
+//							+ ", hands: " + frame.hands().count()
+//							+ ", fingers: " + frame.fingers().count()
+//							+ ", tools: " + frame.tools().count()
+//							+ ", gestures: " + frame.gestures().count());		
+//		
+		
+	}
+	
+}

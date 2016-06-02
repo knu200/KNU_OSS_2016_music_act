@@ -1,0 +1,48 @@
+package musicT;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class Music {
+	static InputStream in;
+	static AudioInputStream ais;
+	static Clip clip;
+	public static void main(String[] args){
+		try{
+			in = new FileInputStream("D:\JAVA\project\music project\musicT\src\musicT");
+			try{
+				try {
+					ais = AudioSystem.getAudioInputStream(in);
+				} catch (UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					clip = AudioSystem.getClip();
+				} catch (LineUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				try {
+					clip.open(ais);
+				} catch (LineUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				clip.start();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+}

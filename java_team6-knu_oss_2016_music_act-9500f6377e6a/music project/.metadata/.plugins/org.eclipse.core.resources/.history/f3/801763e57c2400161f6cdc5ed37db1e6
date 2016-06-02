@@ -1,0 +1,116 @@
+package test;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Point2D;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+
+import javax.sound.sampled.Clip;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Listener;
+
+import test.LeapMotionListener;
+public class Window {
+	public HashMap<Integer,Boolean> select = new HashMap<Integer,Boolean>(); 
+	JFrame frame = new JFrame();
+	public PointMotion point;
+	ButtonListener buttonListener = new ButtonListener();
+	JButton startButton;
+	
+
+	public Window(){
+		
+	}
+	public void initialize(){
+		frame.setTitle("music");
+		frame.setBounds(100,100,800, 600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		JLabel lblLeapInstrument = new JLabel("Motion Band"); // JLabel
+		// "leap Instrument"
+		lblLeapInstrument.setFont(new Font("SansSerif", Font.BOLD, 25));
+		lblLeapInstrument.setBounds(330, 6, 187, 45);
+		frame.getContentPane().add(lblLeapInstrument);
+		point = new PointMotion();
+		point.setBounds(-18, 131, 800, 393);
+		frame.getContentPane().add(point);
+		startButton = new JButton();
+		startButton.setBounds(157, 70, 156, 100);
+		frame.getContentPane().add(startButton);
+		startButton.addActionListener(buttonListener);
+	}
+	public class ButtonListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			Thread music;
+			music = new Thread(new MyThread());
+			music.start();
+		}
+	}
+}
+class MyThread implements Runnable{
+	boolean flag = true;
+	public void run(){
+		LeapMotionListener listener = new LeapMotionListener();
+		Controller controller = new Controller();
+		controller.addListener(listener);
+		while(true){
+			System.out.printf("");
+			if(flag == flag){
+				
+				controller.removeListener(listener);
+				break;
+			}
+		}
+	}
+	public void setFlag(boolean flag){
+		this.flag = flag;
+	}
+}
+class PointMotion extends JComponent{
+	int currentX;
+	int currentY;
+	public PointMotion(){
+		
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		Graphics2D g2d = (Graphics2D) g;
+		//setOpaque(false);
+		Point2D center = new Point2D.Float(20,20);
+		float radius = 20;
+		float[] distribution = {0.0f, 1.0f};
+		
+		Color[] colors = {Color.black, Color.white};
+		RadialGradientPaint gradient = new RadialGradientPaint(center,radius,
+				distribution,colors);
+		if(currentX!=0&&currentY!=0){
+			g2d.setPaint(gradient);
+			g2d.fillOval(currentX, currentY, 20, 20);
+		}
+	}
+	public int getCurrentX() {
+		return currentX;
+	}
+	public void setCurrentX(int currentX) {
+		this.currentX = currentX;
+	}
+	public int getCurrentY() {
+		return currentY;
+	}
+	public void setCurrentY(int currentY) {
+		this.currentY = currentY;
+	}
+}

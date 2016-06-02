@@ -1,0 +1,42 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+public class Window{
+	JFrame frame;
+	
+	public Window(){
+		initialize();
+	}
+	public void initialize(){
+		frame = new JFrame();
+		frame.setTitle("music");
+		frame.setResizable(false);
+		frame.setBounds(100,100,800,600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		LeapmotionAction motion = new LeapmotionAction();
+		motion.setBounds(-18, 131, 800, 393);
+		frame.getContentPane().add(motion);
+	}
+	
+}
+class LeapmotionAction extends JComponent{
+	private static int x = 10;
+	private static int y = 10;
+	public LeapmotionAction(){
+		
+	}
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		g.setColor(Color.blue);
+		g.fillOval(x, y, 20, 20);
+	}
+	public void setX(int x){
+		this.x = x;
+	}
+	public void setY(int y){
+		this.y = y;
+	}
+}

@@ -1,0 +1,105 @@
+package music;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Tool;
+
+public class DrumListener extends Listener {
+	Tool TestTool1;
+	Tool TestTool2;
+
+	Finger Lfinger;
+	Finger Rfinger; // main finger that is pressing keys
+	Frame frame;
+	double volume = 1;
+	
+	Clip clip;
+	ArrayList<Float> calibratingValues = new ArrayList<Float>();
+	String state = "none";
+
+	int number;
+	boolean[] Ravail = { false, false, false, false, false };
+	boolean[] Lavail = { false, false, false, false, false };
+	AudioInputStream ais;
+	int xAxisMin = -200;
+	int xAxisMax = 200;
+	int numTapAreas = 5;
+	int tapAreaSize = (xAxisMax - xAxisMin) / numTapAreas;
+
+	Thread t;
+
+	double currentLFingerX = 0;
+	double currentLFingerY = 0;
+	double currentRFingerX = 0;
+	double currentRFingerY = 0;
+
+	public void onInit(Controller controller) {
+		System.out.println("");
+	}
+
+	public void onDisConnect(Controller controller) {
+		
+	}
+
+	public void onExit(Controller controller) {
+	
+	}
+
+	public void onConnect(Controller controller) {
+	
+
+
+	}
+
+	public void onFrame(Controller controller) {
+
+		int i = 6;
+		int j = 7;
+		frame = controller.frame();
+
+		TestTool1 = frame.tools().get(0);
+		TestTool2 = frame.tools().get(1);
+
+		Lfinger = frame.hands().get(0).fingers().get(0);
+
+		Rfinger = frame.hands().get(1).fingers().get(0);
+
+		MainClass.window.visualizerPanel.repaint();
+
+		currentRFingerX = TestTool1.tipPosition().getX();
+		currentRFingerY = TestTool1.tipPosition().getY();
+
+		currentLFingerX = TestTool2.tipPosition().getX();
+		currentLFingerY = TestTool2.tipPosition().getY();
+		System.out.println(currentRFingerX);
+		MainClass.window.visualizerPanel.setLFingerX((int) map((long) currentLFingerX,
+				xAxisMin, xAxisMax, 0, 800));
+
+		MainClass.window.visualizerPanel.setLFingerY(520 - (int) map((long) currentLFingerY,
+				20, 250, 0, 520));
+
+		MainClass.window.visualizerPanel.setRFingerX((int) map((long) currentRFingerX,
+				xAxisMin, xAxisMax, 0, 800));
+
+		MainClass.window.visualizerPanel.setRFingerY(520 - (int) map((long) currentRFingerY,
+				20, 250, 0, 520));
+
+		i = ((int) currentRFingerX + xAxisMax) / tapAreaSize;
+
+
+	}
+
+	public long map(long x, long in_min, long in_max, long out_min, long out_max) {
+		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	}
+
+}

@@ -1,0 +1,7 @@
+public class MainApp{
+	private static Window window;
+	public static void main(String args[]){
+		window = new Window();
+		window.frame.setVisible(true);
+	}
+}

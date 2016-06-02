@@ -1,0 +1,41 @@
+package musicT;
+
+import java.util.Scanner;
+
+public class Drive {
+	static Music music; 
+	static InputFlag flag;
+	static Thread thread;
+	static Thread flagThread;
+	static boolean stop = false;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		music = new Music();
+		flag = new InputFlag();
+		thread = new Thread(music);
+		flagThread = new Thread(flag);
+		thread.start();
+		flagThread.start();
+	}
+
+}
+class InputFlag implements Runnable{
+	Scanner in = new Scanner(System.in);
+	@Override
+	public void run(){
+		System.out.println("flag :");
+		while(true){
+			int flag = in.nextInt();
+			if(flag == -1){
+				Drive.music.musicClose();
+				Drive.stop = true;
+			}
+			if(flag == 1){
+				Music.mLine.start();
+			}
+			if(flag == 0){
+				Music.mLine.stop();
+			} 
+		}
+	}
+}
